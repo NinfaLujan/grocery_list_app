@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <title>Grocery List</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body>
+  <div id="app">
+    <h1 class="text-3xl font-bold mb-4">Grocery List</h1>
+    <form @submit.prevent="addItem">
+      <input type="text" v-model="newItem.text" placeholder="Grocery item" class="w-full p-2 mb-2">
+      <input type="number" v-model="newItem.quantity" placeholder="Quantity" class="w-full p-2 mb-2">
+      <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Add Item</button>
+    </form>
+    <ul class="list-none mb-4">
+      <li v-for="(item, index) in groceryList" :key="index" class="flex items-center mb-2">
+        <input type="checkbox" v-model="item.done" class="mr-2">
+        {{ item.text }} ({{ item.quantity }})
+        <button @click="removeItem(index)" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">Remove</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    const app = Vue.createApp({
+      data() {
+        return {
+          newItem: { text: '', quantity: 1 },
+          groceryList: []
+        }
+      },
+      methods: {
+        addItem() {
+          this.groceryList.push({ ...this.newItem, done: false });
+          this.newItem.text = '';
+          this.newItem.quantity = 1;
+        },
+        removeItem(index) {
+          this.groceryList.splice(index, 1);
+        }
+      }
+    })
+    app.mount('#app')
+  </script>
+</body>
+</html>
